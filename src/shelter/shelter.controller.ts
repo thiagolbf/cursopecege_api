@@ -36,7 +36,6 @@ export class ShelterController {
   async updateShelterDetails(
     @Body() input: UpdateShelterControllerInput,
   ): Promise<UpdateShelterDetailsUseCaseOutput> {
-    console.log(input);
     const useCaseInput = new UpdateShelterDetailsUseCaseInput({ ...input });
     return await this.updateShelterDetailsUseCase.run(useCaseInput);
   }
