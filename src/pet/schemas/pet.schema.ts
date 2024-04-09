@@ -25,7 +25,7 @@ export class Pet {
   @Prop({ required: true })
   bio: string;
 
-  @Prop({ required: true, default: null })
+  @Prop({ required: false, default: null })
   photo: string;
 
   @Prop({ required: true })
