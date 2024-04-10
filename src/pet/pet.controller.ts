@@ -6,6 +6,7 @@ import {
   Inject,
   Param,
   Post,
+  Put,
 } from '@nestjs/common';
 import CreatePetControllerInput from './dtos/create.pet.controller.input';
 import CreatePetUseCaseOutput from './usecases/dtos/create.pet.usecase.output';
@@ -14,6 +15,9 @@ import { IUseCase } from 'src/domain/iusecase.interface';
 import PetTokens from './pet.tokens';
 import GetPetByIdUseCaseInput from './usecases/dtos/get.pet.by.id.usecase.input';
 import GetPetByIdUseCaseOutput from './usecases/dtos/get.pet.id.usecase.output';
+import UpdatePetControllerInput from './dtos/update.pet.controller.input';
+import UpdatePetByIdUseCaseInput from './usecases/dtos/update.pet.by.id.usecase.input';
+import UpdatePetByIdUseCaseOutput from './usecases/dtos/update.pet.by.id.usecase.output';
 
 @Controller('pet')
 export class PetController {
@@ -27,6 +31,12 @@ export class PetController {
   private readonly getPetByIdUseCase: IUseCase<
     GetPetByIdUseCaseInput,
     GetPetByIdUseCaseOutput
+  >;
+
+  @Inject(PetTokens.updatePetByIdUseCase)
+  private readonly updatePetByIdUseCase: IUseCase<
+    UpdatePetByIdUseCaseInput,
+    UpdatePetByIdUseCaseOutput
   >;
 
   @Post()
@@ -46,5 +56,17 @@ export class PetController {
     } catch (error) {
       throw new BadRequestException(JSON.parse(error.message));
     }
+  }
+
+  @Put(':id')
+  async updatePetById(
+    @Body() input: UpdatePetControllerInput,
+    @Param('id') id: string,
+  ): Promise<UpdatePetByIdUseCaseOutput> {
+    const usecaseInput = new UpdatePetByIdUseCaseInput({
+      ...input,
+      id,
+    });
+    return await this.updatePetByIdUseCase.run(usecaseInput);
   }
 }
