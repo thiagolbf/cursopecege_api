@@ -9,6 +9,11 @@ import { PetModule } from './pet/pet.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
+    ////   PLANO B (upload de fotos)
+    // ServerStaticModule.forRoot({
+    //   rootPath: join(__dirname, '..', '../public'),
+    //   serveRoot: '/public',
+    // }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
